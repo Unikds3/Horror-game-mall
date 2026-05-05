@@ -33,14 +33,13 @@ public class SeatedLook360 : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        // FULL 360 horizontal rotation (no clamp)
+        
         targetYaw += mouseX;
 
-        // Clamp vertical so player doesn't break neck
+       
         targetPitch -= mouseY;
         targetPitch = Mathf.Clamp(targetPitch, downLimit, upLimit);
 
-        // Smooth movement
         currentYaw = Mathf.Lerp(currentYaw, targetYaw, Time.deltaTime * smoothSpeed);
         currentPitch = Mathf.Lerp(currentPitch, targetPitch, Time.deltaTime * smoothSpeed);
 
