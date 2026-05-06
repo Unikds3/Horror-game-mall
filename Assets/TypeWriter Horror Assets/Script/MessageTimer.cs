@@ -8,6 +8,7 @@ public class ClockRadioTimer : MonoBehaviour
 
     [Header("Timer")]
     public float maxTime = 60f;
+
     private float currentTime;
     private bool timerRunning;
 
@@ -15,6 +16,9 @@ public class ClockRadioTimer : MonoBehaviour
     public float alarmStartTime = 10f;
     public AudioSource alarmSound;
     public AudioSource tickSound;
+
+    [Header("Monster")]
+    public StationaryMonsterThreat monster;
 
     private bool alarmStarted;
 
@@ -46,7 +50,11 @@ public class ClockRadioTimer : MonoBehaviour
         if (currentTime <= 0f)
         {
             currentTime = 0f;
+
             StopTimer();
+
+            if (monster != null)
+                monster.TimeRanOut();
         }
 
         UpdateClockDisplay();
