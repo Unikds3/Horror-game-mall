@@ -1,48 +1,55 @@
 using UnityEngine;
 
-public class SeatedLook360 : MonoBehaviour
+public class SeatedLookController : MonoBehaviour
 {
-    [Header("Camera")]
-    public Transform playerCamera;
-
-    [Header("Settings")]
     public float mouseSensitivity = 2f;
-    public float smoothSpeed = 8f;
+    public float maxLookAngle = 80f;
 
-    [Header("Vertical Limits")]
-    public float upLimit = 25f;
-    public float downLimit = -25f;
+    public bool canLook = true;
 
-    private float targetYaw;
-    private float targetPitch;
-
-    private float currentYaw;
-    private float currentPitch;
+    private float rotationX;
+    private float rotationY;
 
     void Start()
     {
+        SyncRotationToCurrentTransform();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        if (playerCamera == null)
-            playerCamera = Camera.main.transform;
     }
 
     void Update()
     {
+        if (!canLook) return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        
-        targetYaw += mouseX;
+        rotationY += mouseX;
+        rotationX -= mouseY;
 
-       
-        targetPitch -= mouseY;
-        targetPitch = Mathf.Clamp(targetPitch, downLimit, upLimit);
+        rotationX = Mathf.Clamp(rotationX, -maxLookAngle, maxLookAngle);
 
-        currentYaw = Mathf.Lerp(currentYaw, targetYaw, Time.deltaTime * smoothSpeed);
-        currentPitch = Mathf.Lerp(currentPitch, targetPitch, Time.deltaTime * smoothSpeed);
+        transform.localRotation = Quaternion.Euler(rotationX, rotationY, 0f);
+    }
+    public void ResetLook()
+    {
+        rotationX = 0f;
+        rotationY = 0f;
+        transform.localRotation = Quaternion.identity;
+    }
 
-        playerCamera.localRotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
+    public void SyncRotationToCurrentTransform()
+    {
+        Vector3 angles = transform.localEulerAngles;
+
+        rotationX = angles.x;
+        rotationY = angles.y;
+
+        if (rotationX > 180f)
+            rotationX -= 360f;
+
+        if (rotationY > 180f)
+            rotationY -= 360f;
     }
 }
