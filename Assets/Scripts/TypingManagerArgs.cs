@@ -1,14 +1,17 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 
 public class TypingManagerArgs : MonoBehaviour
 {
     // This object was made so I  don't have to serialize over 40 things in each instance of the TypingManager
+    public AudioSource radio;
+
     public List<GameObject> keys;
     public List<Letter> letters;
 
-    public static string VALID_LETTERS = "QWERTYUIOPASDFGHJKLZXCVBNM";
+    public static string validLetters = "";
     public static Dictionary<char, Letter> letterDict = new Dictionary<char, Letter>();
 
     [System.NonSerialized] public string currentKeyboardLayout;
@@ -16,10 +19,11 @@ public class TypingManagerArgs : MonoBehaviour
 
     private void Awake()
     { 
-        currentKeyboardLayout = VALID_LETTERS;
+        currentKeyboardLayout = validLetters;
 
         foreach (Letter letter in letters)
-        { 
+        {
+            validLetters += letter.ID;
             letterDict.Add(letter.ID, letter);
         }
 
@@ -50,8 +54,18 @@ public class TypingManagerArgs : MonoBehaviour
     public void GetNewString()
     {
         // returns 5-8 random chars
-        currentString = string.Join("", new HashSet<char>(VALID_LETTERS)).Substring(0, Random.Range(1, 5) + 4);
+        currentString = string.Join("", new HashSet<char>(validLetters)).Substring(0, Random.Range(1, 5) + 4);
 
-        // enunciate string
+        StartCoroutine(EnunciateString());
+    }
+
+    public IEnumerator EnunciateString()
+    {
+        for (int i = 0; i < currentString.Length; ++i)
+        { 
+            radio.clip = letterDict[currentString[i]].NormalSound;
+            radio.Play();
+            yield return new WaitForSeconds(letterDict[currentString[i]].NormalSound.length);
+        }
     }
 }
