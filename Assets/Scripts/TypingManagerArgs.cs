@@ -16,16 +16,19 @@ public class TypingManagerArgs : MonoBehaviour
 
     [System.NonSerialized] public string currentKeyboardLayout;
     [System.NonSerialized] public string currentString;
+    
+    private bool shouldInterruptEnonciation = false;
+    private bool enunciating = false;
 
     private void Awake()
     { 
-        currentKeyboardLayout = validLetters;
-
         foreach (Letter letter in letters)
         {
             validLetters += letter.ID;
             letterDict.Add(letter.ID, letter);
         }
+
+        currentKeyboardLayout = validLetters;
 
         EmptyKeyboard();
         ShuffleKeyboard();
@@ -61,11 +64,35 @@ public class TypingManagerArgs : MonoBehaviour
 
     public IEnumerator EnunciateString()
     {
+        enunciating = true;
+
         for (int i = 0; i < currentString.Length; ++i)
         { 
+            if (shouldInterruptEnonciation)
+            {
+                shouldInterruptEnonciation = false;
+                break;
+            }
+
             radio.clip = letterDict[currentString[i]].NormalSound;
             radio.Play();
             yield return new WaitForSeconds(letterDict[currentString[i]].NormalSound.length);
         }
+
+        enunciating = false;
+    }
+
+    public bool ShouldInterruptEnonciation { 
+        get 
+        { 
+            return shouldInterruptEnonciation; 
+        } 
+        set 
+        {
+            if (enunciating)
+            {
+                shouldInterruptEnonciation = value;
+            }
+        } 
     }
 }
