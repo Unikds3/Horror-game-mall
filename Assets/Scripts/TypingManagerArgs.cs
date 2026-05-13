@@ -39,7 +39,7 @@ public class TypingManagerArgs : MonoBehaviour
     {
         foreach (GameObject key in keys)
         {
-            key.GetComponent<TMP_Text>().text = "";
+            key.transform.Find("Canvas").Find("Letter").GetComponent<TMP_Text>().text = "";
         }
     }
 
@@ -50,7 +50,7 @@ public class TypingManagerArgs : MonoBehaviour
         // the following relies on the fact keys.Count >= letter.Count
         for (int i = 0; i < currentKeyboardLayout.Length; ++i)
         {
-            keys[i].GetComponent<TMP_Text>().text = currentKeyboardLayout[i].ToString();
+            keys[i].transform.Find("Canvas").Find("Letter").GetComponent<TMP_Text>().text = currentKeyboardLayout[i].ToString();
         }
     }
 
