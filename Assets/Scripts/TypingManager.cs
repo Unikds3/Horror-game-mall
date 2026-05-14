@@ -22,6 +22,8 @@ public class TypingManager : MonoBehaviour
     public void Click()
     {
         animator.SetTrigger("IsPushed");
+        args.radio.clip = args.typeWriterKeySound;
+        args.radio.Play();
 
         int i = args.keys.IndexOf(gameObject);
 
@@ -44,7 +46,7 @@ public class TypingManager : MonoBehaviour
             {
                 // wrong letter
                 args.ShouldInterruptEnonciation = true;
-                // // punishment sound
+                StartCoroutine(args.PlayWrongSound());
                 // // punishment
 
                 StartCoroutine(args.EnunciateString());

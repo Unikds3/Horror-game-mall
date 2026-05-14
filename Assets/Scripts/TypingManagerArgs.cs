@@ -8,6 +8,9 @@ public class TypingManagerArgs : MonoBehaviour
     // This object was made so I  don't have to serialize over 40 things in each instance of the TypingManager
     public AudioSource radio;
 
+    public AudioClip typeWriterKeySound;
+    public AudioClip wrongSound;
+
     public List<GameObject> keys;
     public List<Letter> letters;
 
@@ -91,6 +94,13 @@ public class TypingManagerArgs : MonoBehaviour
         }
 
         enunciating = false;
+    }
+
+    public IEnumerator PlayWrongSound()
+    {
+        radio.clip = wrongSound;
+        radio.Play();
+        yield return new WaitForSeconds(wrongSound.length);
     }
 
     public bool ShouldInterruptEnonciation { 

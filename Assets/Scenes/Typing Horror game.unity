@@ -11539,6 +11539,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   radio: {fileID: 837492203}
+  typeWriterKeySound: {fileID: 8300000, guid: b5674cadc097e854b85796526908382e, type: 3}
+  wrongSound: {fileID: 8300000, guid: 43dd5adf67e5ddf4a821660c84e16425, type: 3}
   keys:
   - {fileID: 1394294224}
   - {fileID: 613750072}
