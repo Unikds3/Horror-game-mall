@@ -26,13 +26,17 @@ public class SeatedLookController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log(Camera.main);
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
             {
                 Debug.Log("Hit: " + hit.collider.gameObject.name);
+
+                if (hit.collider.gameObject.TryGetComponent<TypingManager>(out TypingManager typingManager))
+                {
+                    typingManager.Click();
+                }
             }
         }
 
