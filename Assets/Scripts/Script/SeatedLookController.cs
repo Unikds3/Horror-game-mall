@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SeatedLookController : MonoBehaviour
 {
+    public Camera playerCamera;
+
     public float mouseSensitivity = 2f;
     public float maxLookAngle = 80f;
 
@@ -24,7 +26,8 @@ public class SeatedLookController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Debug.Log(Camera.main);
+            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))

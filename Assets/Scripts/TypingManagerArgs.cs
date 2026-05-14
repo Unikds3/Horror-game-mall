@@ -45,19 +45,30 @@ public class TypingManagerArgs : MonoBehaviour
 
     public void ShuffleKeyboard()
     {
-        currentKeyboardLayout = string.Join("", new HashSet<char>(currentKeyboardLayout));
+        string tmp = currentKeyboardLayout;
+        string futureKeyboardLayout = "";
 
         // the following relies on the fact keys.Count >= letter.Count
         for (int i = 0; i < currentKeyboardLayout.Length; ++i)
         {
-            keys[i].transform.Find("Canvas").Find("Letter").GetComponent<TMP_Text>().text = currentKeyboardLayout[i].ToString();
+            int j = Random.Range(0, tmp.Length);
+            Debug.Log(j);
+            futureKeyboardLayout += tmp[j];
+            keys[i].transform.Find("Canvas").Find("Letter").GetComponent<TMP_Text>().text = tmp[j].ToString();
+            tmp.Remove(j);
         }
+
+        currentKeyboardLayout = futureKeyboardLayout;
     }
 
     public void GetNewString()
     {
+        currentString = "";
         // returns 5-8 random chars
-        currentString = string.Join("", new HashSet<char>(validLetters)).Substring(0, Random.Range(1, 5) + 4);
+        for (int i = 0; i < Random.Range(1, 5) + 4; ++i)
+        {
+            currentString += validLetters[Random.Range(1, validLetters.Length)];
+        }
 
         StartCoroutine(EnunciateString());
     }
