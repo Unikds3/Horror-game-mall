@@ -52,10 +52,10 @@ public class TypingManagerArgs : MonoBehaviour
         for (int i = 0; i < currentKeyboardLayout.Length; ++i)
         {
             int j = Random.Range(0, tmp.Length);
-            Debug.Log(j);
+            Debug.Log(tmp.Length);
             futureKeyboardLayout += tmp[j];
             keys[i].transform.Find("Canvas").Find("Letter").GetComponent<TMP_Text>().text = tmp[j].ToString();
-            tmp.Remove(j);
+            tmp = tmp.Remove(j, 1);
         }
 
         currentKeyboardLayout = futureKeyboardLayout;
